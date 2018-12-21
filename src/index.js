@@ -1,10 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react"; //react语法包
+import ReactDOM from "react-dom"; //react
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from "./component/App"; //默认导入
+import * as serviceWorker from "./serviceWorker";
+
+ReactDOM.render(<App />, document.getElementById("wrapper"));
+// 通过dom渲染方法，将假的dom变成真的dom节点
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
