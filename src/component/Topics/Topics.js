@@ -4,10 +4,9 @@ import axios from "axios";
 import styled from "styled-components";
 import { URL } from "./../../static/url";
 
-class Same extends Component {
+class Topics extends Component {
   state = {
     currentPage: 1,
-    total: [3330, 530, 1364, 1980, 479],
     topics: []
   };
   componentDidMount() {
@@ -15,6 +14,8 @@ class Same extends Component {
     this.getAxios(currentPage);
   }
   render() {
+    const { match } = this.props;
+    const path = match.params.tab;
     const { total, topics } = this.state;
     const { ind } = this.props;
     const liList = topics.map(ele => (
@@ -41,7 +42,7 @@ class Same extends Component {
             问答
           </Span>
         )}
-        <span className="link">{ele.title}</span>
+        {ele.title}
       </Cell>
     ));
     const content = topics.length ? (
@@ -54,7 +55,7 @@ class Same extends Component {
         {content}
         <PageControll>
           <Pagination
-            total={total[ind]}
+            total={20}
             pageSize={40}
             defaultCurrent={1}
             onChange={this.getAxios}
@@ -64,9 +65,10 @@ class Same extends Component {
     );
   }
   getAxios = page => {
-    const { path } = this.props;
-    console.log(page);
+    const { match } = this.props;
+    const path = match.params.tab;
     axios.get(`${URL}/topics?tab=${path}&&page=${page}`).then(res => {
+      console.log(res.data.data);
       this.setState({
         topics: res.data.data,
         currentPage: page
@@ -75,7 +77,7 @@ class Same extends Component {
   };
 }
 
-export default Same;
+export default Topics;
 const Cell = styled.li`
   padding: 10px;
   border-bottom: 1px solid #f0f0f0;
@@ -94,15 +96,6 @@ const Cell = styled.li`
   }
   .sculp > img {
     width: 100%;
-  }
-  :hover .link {
-    text-decoration: underline;
-  }
-  .link {
-    width: 700px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
 `;
 const Span = styled.span`
