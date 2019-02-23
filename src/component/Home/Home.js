@@ -1,46 +1,31 @@
 import React, { Component } from "react";
 import { NavLink, Route } from "react-router-dom";
 import styled from "styled-components";
-import All from "./../Content/All";
-import Good from "./../Content/Good";
-import Share from "./../Content/Share";
-import Job from "./../Content/Job";
-import Ask from "./../Content/Ask";
 import Topics from "../Topics/Topics";
-import Same from "../Content/Same";
 
 class Home extends Component {
   state = {
     topics: [],
-    type: "/"
+    type: ""
   };
   componentDidMount() {
     const { type } = this.state;
   }
   render() {
-    const { topics } = this.state;
     const navArr = [
-      { type: "", txt: "全部", pagesNum: "84" },
-      { type: "good", txt: "精华", pagesNum: "50" },
-      { type: "share", txt: "分享", pagesNum: "" },
-      { type: "ask", txt: "问答", pagesNum: "" },
-      { type: "job", txt: "招聘", pagesNum: "" }
+      { type: "all", txt: "全部" },
+      { type: "good", txt: "精华" },
+      { type: "share", txt: "分享" },
+      { type: "ask", txt: "问答" },
+      { type: "job", txt: "招聘" }
     ];
-    const component = [All, Good, Share, Ask, Job];
     const nav = navArr.map(ele => (
       <li key={ele.type}>
-        <NavLink to={`/${ele.type}`} exact>
-          {ele.txt}
-        </NavLink>
+        <NavLink to={`/${ele.type}`}>{ele.txt}</NavLink>
       </li>
     ));
     const route = navArr.map((ele, ind) => (
-      <Route
-        key={ele.type}
-        component={component[ind]}
-        path={`/${ele.type}`}
-        exact
-      />
+      <Route key={ele.type} component={Topics} path={`/${ele.type}`} />
     ));
     // const route = (
     //   <>
@@ -53,6 +38,7 @@ class Home extends Component {
         <>
           <ul className="nav">{nav}</ul>
           {route}
+          <Route key="23333" component={Topics} path="/" exact />
         </>
       </Homo>
     );

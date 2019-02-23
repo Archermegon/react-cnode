@@ -1,12 +1,14 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 class Header extends Component {
   render() {
     return (
       <Head>
         <div className="container">
-          <div className="logo">
+          <Link className="logo" to="/">
             {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -46,12 +48,34 @@ class Header extends Component {
                 d="M36.28 61.87c1.098.65 1.358.255 1.742.035.385-.221 14.695-8.411 15.606-8.857.912-.446 1.315-1.915.114-2.61-1.201-.697-25.41-14.721-24.241-14.12 1.259.646-1.202-.829-2.626-.175-1.425.654-23.231 13.192-24.777 14.075-1.545.883-2.032 1.731-2.027 2.907.004 1.176-.078 27.253 0 28.801.078 1.548.69 2.052 1.506 2.609.816.558 22.901 13.505 24.572 14.41 1.671.907 2.768.597 3.853-.04 1.085-.639 22.727-13.003 23.593-13.554.866-.551 1.653-1.969-.157-2.992-1.811-1.022-14.779-8.693-15.279-8.943s-.796-.255-1.52.151c-.724.408-7.222 4.062-8.013 4.524s-.904.254-1.283.033c-.378-.222-7.085-4.135-7.859-4.571s-.866-.656-.868-1.25c-.001-.593-.018-8.121.023-8.998.04-.877.165-1.074.962-1.548.797-.474 6.695-3.978 7.166-4.293.47-.315 1.459-.345 2.231.108.772.452 6.184 3.647 7.282 4.298"
               />
             </svg>
-          </div>
+          </Link>
           <input type="text" className="text" />
+          <div className="navTop">
+            <button>首页</button>
+            <button>未读消息</button>
+            <button>新手入门</button>
+            <button>API</button>
+            <button>关于</button>
+            <button>设置</button>
+            {sessionStorage.loginame ? (
+              <button onClick={this.onout}>退出</button>
+            ) : (
+              <button onClick={this.onclick}>登录</button>
+            )}
+          </div>
         </div>
       </Head>
     );
   }
+  handleChange = event => {
+    this.setState({
+      val: event.target.value
+    });
+  };
+  onout = () => {
+    sessionStorage.clear();
+    window.location.reload();
+  };
 }
 
 export default Header;
@@ -71,5 +95,24 @@ const Head = styled.header`
     width: 90%;
     margin: 0 auto;
     display: flex;
+  }
+  input {
+    color: #000;
+    height: 20px;
+    margin: 10px;
+  }
+  .navTop {
+    margin-left: 360px;
+  }
+  button {
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 10px 15px;
+    color: #888;
+  }
+  button:hover {
+    color: #fff;
   }
 `;

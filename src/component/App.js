@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Header from "./Header/Header";
 import "./../static/global.css";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Main from "./Main/Main";
+import User from "./User/User";
+import Author from "./Author/Author";
 
 class App extends Component {
   render() {
@@ -13,6 +15,11 @@ class App extends Component {
           <Header />
           <Wrap>
             <Main />
+            <Switch>
+              <Route component={Author} path="/topic/:id" />
+              <Route component={Author} path="/self/:id" />
+              <Route component={User} path="/" />
+            </Switch>
           </Wrap>
         </div>
       </BrowserRouter>
@@ -26,4 +33,6 @@ const Wrap = styled.div`
   margin: 20px 0;
   margin-left: 5%;
   padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
 `;

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Pagination, Skeleton } from "antd";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { URL } from "./../../static/url";
 
-class Topics extends Component {
+class Topic extends Component {
   state = {
     currentPage: 1,
     topics: []
@@ -14,15 +15,40 @@ class Topics extends Component {
     this.getAxios(currentPage);
   }
   render() {
+    const { topics } = this.state;
     const { match } = this.props;
-    const path = match.params.tab;
-    const { total, topics } = this.state;
-    const { ind } = this.props;
+    const path = match.path.slice(1);
+    let total;
+    switch (path) {
+      case "":
+        total = 3330;
+        break;
+      case "all":
+        total = 3330;
+        break;
+      case "good":
+        total = 530;
+        break;
+      case "share":
+        total = 1364;
+        break;
+      case "ask":
+        total = 1980;
+        break;
+      case "job":
+        total = 479;
+        break;
+      default:
+        break;
+    }
     const liList = topics.map(ele => (
       <Cell className="ele" key={ele.id}>
-        <div className="sculp">
+        <Link className="sculp" to={`/self/${ele.author.loginname}`}>
           <img src={ele.author.avatar_url} alt="" />
-        </div>
+        </Link>
+        <p className="reply">
+          <span>{ele.reply_count}</span>/<span>{ele.visit_count}</span>
+        </p>
         {ele.top ? (
           <Span
             style={{
@@ -33,16 +59,12 @@ class Topics extends Component {
             置顶
           </Span>
         ) : (
-          <Span
-            style={{
-              backgroundColor: "#e5e5e5",
-              color: "#999"
-            }}
-          >
-            问答
-          </Span>
+          ""
         )}
-        {ele.title}
+        <span className="link">
+          <Link to={`/topic/${ele.id}`}>{ele.title}</Link>
+        </span>
+        <span>1小时之前</span>
       </Cell>
     ));
     const content = topics.length ? (
@@ -55,7 +77,7 @@ class Topics extends Component {
         {content}
         <PageControll>
           <Pagination
-            total={20}
+            total={total}
             pageSize={40}
             defaultCurrent={1}
             onChange={this.getAxios}
@@ -66,7 +88,9 @@ class Topics extends Component {
   }
   getAxios = page => {
     const { match } = this.props;
-    const path = match.params.tab;
+    // console.log(match);
+    const path = match.path.slice(1);
+    // console.log(path);
     axios.get(`${URL}/topics?tab=${path}&&page=${page}`).then(res => {
       console.log(res.data.data);
       this.setState({
@@ -77,7 +101,7 @@ class Topics extends Component {
   };
 }
 
-export default Topics;
+export default Topic;
 const Cell = styled.li`
   padding: 10px;
   border-bottom: 1px solid #f0f0f0;
@@ -96,6 +120,25 @@ const Cell = styled.li`
   }
   .sculp > img {
     width: 100%;
+  }
+  :hover .link {
+    text-decoration: underline;
+  }
+  .link {
+    width: 600px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .link > a {
+    color: #222;
+  }
+  .reply {
+    width: 70px;
+    display: flex;
+    align-items: center;
+    line-height: 30px;
+    margin-bottom: 0;
   }
 `;
 const Span = styled.span`
